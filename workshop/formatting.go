@@ -9,6 +9,7 @@ import (
 
 const workshop string = `https://steamcommunity.com/workshop/filedetails/?id=%s`
 
+// Converts a Workshop ID to a Workshop URL
 func WorkshopIDToURL(id interface{}) (string, bool) {
 	var idStr string
 	switch t := id.(type) {
@@ -23,8 +24,10 @@ func WorkshopIDToURL(id interface{}) (string, bool) {
 	return fmt.Sprintf(workshop, idStr), true
 }
 
+// Regular expression to get the ID from a URL.
 var getIDRegexp = regexp.MustCompile(`\?id=(\d+)`) // stricter: `steamcommunity\.com\/(?:workshop|sharedfiles)\/filedetails\/\?id=(\d+)`
 
+// Extracts the Workshop ID from its URL.
 func WorkshopIDFromURL(url string) (int, error) {
 	matches := getIDRegexp.FindStringSubmatch(url)
 

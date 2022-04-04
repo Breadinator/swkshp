@@ -7,6 +7,9 @@ import (
 	"github.com/breadinator/swkshp/utils"
 )
 
+// Extracts things that match "dir/id - (downloaded title).zip" where dir is a given directory and id is the given Workshop ID.
+//
+// Deletes the archive if successful.
 func ExtractResource(id int, dir string, verbose bool) (string, error) {
 	url, _ := WorkshopIDToURL(id)
 	title, err := GetResourceTitle(url)

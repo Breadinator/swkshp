@@ -6,6 +6,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+// Deprecated: use workshop.GetBreadcrumbs
 func GetBreadcrumbs(url string) ([]string, error) {
 	doc, err := GetDoc(url)
 	if err != nil {
@@ -27,6 +28,7 @@ func GetBreadcrumbs(url string) ([]string, error) {
 	return breadcrumbs, eachErr
 }
 
+// Gets the goquery document of a given web page.
 func GetDoc(url string) (*goquery.Document, error) {
 	resp, err := http.Get(url)
 	if err != nil {

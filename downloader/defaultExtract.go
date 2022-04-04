@@ -12,13 +12,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func defaultExtract(cmd *cobra.Command, args []string) {
+// Downloads and extracts from Steam Workshop to the mods folder.
+func DefaultExtract(cmd *cobra.Command, args []string) {
 	game, err := cmd.Flags().GetString("game")
 	if err != nil {
 		panic(err)
 	}
 	if game == "" {
-		game, err = workshop.GetGame(args[0:])
+		game, err = workshop.GetGame(args)
 		if err != nil {
 			panic(err)
 		}

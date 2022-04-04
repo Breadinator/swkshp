@@ -22,6 +22,7 @@ func downloadFile(url string, output io.Writer) error {
 	return err
 }
 
+// Writes Workshop resource by ID to given Writer.
 func DownloadResource(id int, output io.Writer) error {
 	tries := 10
 

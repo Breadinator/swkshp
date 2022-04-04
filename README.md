@@ -2,6 +2,11 @@
 SWkshp installs mods from the Steam Workshop to mod folders of games owned via platforms other than steam. I don't endorse piracy, for use only if you own the game.
 
 ## Installation
+### Through GitHub Releases
+Head to the [latest release](https://github.com/Breadinator/swkshp/releases/latest) and choose the appropriate version.* Then everything should be ready to go!
+
+*"swkshp.exe" for Windows, "swkshp-linux" for Linux, "skwshp-darwin" for Mac.
+
 ### From source
 It can be installed directly from github using go's built-in tools.
 ```bash
@@ -43,3 +48,4 @@ I'm not sure how reliable the check to see if it's a collection is, so I might h
 ## To-do
 * Version control
 * Test on Linux and Mac
+* Better errors

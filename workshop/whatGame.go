@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -15,6 +16,8 @@ func GetGame(id interface{}) (string, error) {
 		return getGameInt(t)
 	case string:
 		return getGameStr(t)
+	case []string:
+		return getGameStr(strings.Join(t[0:], " "))
 	default:
 		return "", fmt.Errorf("expected string or int, got %s", reflect.TypeOf(id))
 	}

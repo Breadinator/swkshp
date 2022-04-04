@@ -10,6 +10,9 @@ import (
 
 const ENDPOINT string = "https://node05.steamworkshopdownloader.io/prod//api/"
 
+// Checks if a resource is available.
+//
+// Param `resource` is an int for its Workshop ID or a string for its Workshop URL.
 func CheckAvailable(resource interface{}) (string, []error) {
 	var id int
 	switch t := resource.(type) {

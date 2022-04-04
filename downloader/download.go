@@ -4,8 +4,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func Root(cmd *cobra.Command, args []string) {
-	defaultExtract(cmd, args)
+func Download(cmd *cobra.Command, args []string) {
+	DefaultExtract(cmd, args)
 
 	//for special game support, right now not needed
 	/*game, err := cmd.Flags().GetString("game")

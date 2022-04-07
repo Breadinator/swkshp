@@ -13,7 +13,11 @@ var rootCmd = &cobra.Command{
 	Short: "Download from Steam Workshop without authentication",
 	Long:  `Download from Steam Workshop without authentication.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		downloader.Download(cmd, args)
+		if len(args) == 0 {
+			cmd.Help()
+		} else {
+			downloader.Download(cmd, args)
+		}
 	},
 	Args: cobra.MaximumNArgs(1),
 }

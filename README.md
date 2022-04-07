@@ -31,7 +31,7 @@ swkshp.exe <url to workshop page> [-g <gamename>]
 ```
 The -g flag is used to define the game. By default it reads the web page to find out what game it's for, so this flag is often unneccesary.
 
-Let's say we want to install [Hugslib](https://steamcommunity.com/workshop/filedetails/?id=818773962). The command to install it would be:
+Let's say we want to install [HugsLib](https://steamcommunity.com/workshop/filedetails/?id=818773962). The command to install it would be:
 ```bash
 swkshp.exe https://steamcommunity.com/workshop/filedetails/?id=818773962
 ```
@@ -45,7 +45,19 @@ This command looks through the web page, makes a list of every listed item on it
 
 I'm not sure how reliable the check to see if it's a collection is, so I might have to improve it or at least add a manual flag if necessary.
 
+### Removing a mod
+To remove a mod, use the command:
+```bash
+shwkshp.exe remove <url> [-g <gamename>]
+```
+This command will delete all associated files and remove its entry from the internal 
+
 ## To-do
-* Version control
+* Improve the version tracking, and test more extensively
 * Test on Linux and Mac
 * Better errors
+* Add extra config options, e.g.
+  * Choosing the md5 buffer size
+* Streamline, e.g.
+  * Remove unneccesary steps (e.g. constant converting to and from url/id)
+* Autoupdater?

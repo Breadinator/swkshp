@@ -38,3 +38,12 @@ func GetDoc(url string) (*goquery.Document, error) {
 
 	return goquery.NewDocumentFromReader(resp.Body)
 }
+
+// Gets the Updated timestamp
+func GetUpdated(url string) (string, error) {
+	doc, err := GetDoc(url)
+	if err != nil {
+		return "", err
+	}
+	return doc.Find("div.detailsStatRight").Last().Html()
+}

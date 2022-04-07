@@ -1,8 +1,11 @@
 module github.com/breadinator/swkshp
 
-go 1.17
+go 1.18
 
-require github.com/stretchr/testify v1.7.1
+require (
+	github.com/stretchr/testify v1.7.1
+	golang.org/x/exp v0.0.0-20220328175248-053ad81199eb
+)
 
 require (
 	github.com/andybalholm/cascadia v1.3.1 // indirect
@@ -16,7 +19,9 @@ require (
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/blockloop/scan v1.3.0
 	github.com/davecgh/go-spew v1.1.0 // indirect
+	github.com/mattn/go-sqlite3 v1.14.12
 	github.com/parnurzeal/gorequest v0.2.16
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

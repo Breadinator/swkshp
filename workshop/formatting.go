@@ -10,7 +10,7 @@ import (
 const workshop string = `https://steamcommunity.com/workshop/filedetails/?id=%s`
 
 // Converts a Workshop ID to a Workshop URL
-func WorkshopIDToURL(id interface{}) (string, bool) {
+func WorkshopIDToURL(id any) (string, bool) {
 	var idStr string
 	switch t := id.(type) {
 	case int:

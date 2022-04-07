@@ -10,7 +10,7 @@ import (
 )
 
 // Gets the game from a steam workshop ID or URL. Arg "id" accepts int or string, where the former is the ID and the latter is the full URL.
-func GetGame(id interface{}) (string, error) {
+func GetGame(id any) (string, error) {
 	switch t := id.(type) {
 	case int:
 		return getGameInt(t)

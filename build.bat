@@ -11,4 +11,4 @@ SET GOOS=darwin
 go build -o build/swkshp-darwin .
 
 SET GOOS=windows
-go build -o build/swkshp-win64.exe .
+go build -o build/swkshp.exe .

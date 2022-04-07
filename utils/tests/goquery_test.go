@@ -1,6 +1,7 @@
 package utils_tests
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/breadinator/swkshp/utils"
@@ -16,4 +17,15 @@ func Test_GetBreadcrumbs(t *testing.T) {
 	for i := 0; i < len(breadcrumbs); i++ {
 		assert.Equal(t, expected[i], breadcrumbs[i])
 	}
+}
+
+func Test_GetUpdated(t *testing.T) {
+	timestamp, err := utils.GetUpdated("https://steamcommunity.com/workshop/filedetails/?id=818773962")
+	assert.Nil(t, err)
+	assert.Equal(t, "25 Sep, 2021 @ 3:17am", timestamp) //utc time i think?
+	fmt.Println(timestamp)
+
+	time, ok := utils.ParseWorkshopTimestamp(timestamp)
+	assert.True(t, ok)
+	fmt.Println(time)
 }

@@ -26,7 +26,7 @@ func Test_GetGame_UsingInt(t *testing.T) {
 }
 
 func Test_GetGame_UsingInvalidType(t *testing.T) {
-	check := func(a interface{}) {
+	check := func(a any) {
 		_, err := workshop.GetGame(a)
 		assert.NotNil(t, err)
 	}

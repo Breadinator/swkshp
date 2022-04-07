@@ -1,6 +1,8 @@
 package downloader
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -8,6 +10,8 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/breadinator/swkshp/config"
+	"github.com/breadinator/swkshp/utils"
+	"github.com/breadinator/swkshp/versions"
 	"github.com/breadinator/swkshp/workshop"
 	"github.com/spf13/cobra"
 )
@@ -37,36 +41,51 @@ func DefaultExtract(cmd *cobra.Command, args []string) {
 	if isCollection, err := workshop.IsCollection(url); isCollection {
 		resp, err := http.Get(url)
 		if err != nil {
-			panic(err)
+			utils.Err(err)
+			return
 		}
 		defer resp.Body.Close()
 
 		doc, err := goquery.NewDocumentFromReader(resp.Body)
 		if err != nil {
-			panic(err)
+			utils.Err(err)
+			return
 		}
 
 		doc.Find("div.collectionItem").Each(func(i int, s *goquery.Selection) {
 			link, exists := s.Find("div.collectionItemDetails a").Attr("href")
 			if exists {
-				defaultExtractResource(link, modFolder)
+				defaultExtractResource(link, modFolder, game)
 			}
 		})
 
 	} else if err != nil {
-		panic(err)
+		utils.Err(err)
+		return
 	} else {
-		defaultExtractResource(url, modFolder)
+		defaultExtractResource(url, modFolder, game)
 	}
 
 }
 
-func defaultExtractResource(url, dir string) {
+func defaultExtractResource(url, dir, game string) {
 	id, err := workshop.WorkshopIDFromURL(url)
 	if err != nil {
-		panic(err)
+		utils.Err(err)
+		return
 	}
-	if _, err := workshop.ExtractResource(id, dir, true); err != nil {
-		panic(err)
+
+	// checks if newer version detected
+	entry, err := versions.GetModEntry(game, id)
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+		utils.Err(err)
+		return
+	}
+	if t, ok := utils.ParseWorkshopTimestamp(url); ok && t.Before(entry.Updated) {
+		return
+	}
+
+	if _, err := workshop.ExtractResource(id, dir, game, true); err != nil {
+		utils.Err(err)
 	}
 }

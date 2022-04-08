@@ -9,7 +9,7 @@ import (
 // At the top of a Workshop page theres "breadcrumbs" which look like "Game > Workshop > Collections > User's Workshop".
 // This function checks if "Collection" is in those breadcrumbs.
 func IsCollection(url string) (bool, error) {
-	breadcrumbs, err := utils.GetBreadcrumbs(url)
+	breadcrumbs, err := GetBreadcrumbs(url)
 	if err != nil {
 		return false, err
 	}

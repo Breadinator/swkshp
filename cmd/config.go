@@ -2,10 +2,10 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"os"
 
 	"github.com/breadinator/swkshp/config"
+	"github.com/breadinator/swkshp/utils"
 	"github.com/skratchdot/open-golang/open"
 	"github.com/spf13/cobra"
 )
@@ -19,13 +19,15 @@ var configCmd = &cobra.Command{
 		if len(args) == 0 { // Get config path and open it
 			p, e := config.GetConfigPath()
 			if e != nil {
+				utils.Err(e)
 				panic(e)
 			}
 
-			fmt.Println("Config stored at: " + p)
+			utils.Info("Config stored at: " + p)
 
 			if _, e := os.Stat(p); errors.Is(e, os.ErrNotExist) {
 				if err := os.Mkdir(p, os.ModePerm); err != nil {
+					utils.Err(err)
 					panic(err)
 				}
 			}
@@ -35,20 +37,19 @@ var configCmd = &cobra.Command{
 		} else { // Set config
 			if args[0] == "game" {
 				if len(args) == 1 {
-					if p, e := config.GetConfigPathGame(); e == nil {
-						fmt.Println("Config for games stored at " + p)
-					}
-
+					utils.Info("Config for games stored at " + config.Conf.Paths.Games)
 				} else if len(args) == 2 { // get game location
-					path, ok := config.GetGame(args[1])
+					path, ok := config.Conf.Games[args[1]]
 					if ok {
-						fmt.Printf("For %s, downloading to %s\n", args[1], path)
+						utils.Info("For %s, downloading to %s", args[1], path)
 					} else {
-						fmt.Printf("Install directory not set for %s\n", args[1])
+						utils.Info("Install directory not set for %s", args[1])
 					}
 
 				} else if len(args) == 3 { // set game location
-					if err := config.SetGame(args[1], args[2]); err != nil {
+					config.Conf.Games[args[1]] = args[2]
+					if err := config.SaveConfig(config.Conf); err != nil {
+						utils.Err(err)
 						panic(err)
 					}
 				}

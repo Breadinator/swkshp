@@ -1,15 +1,17 @@
 package config
 
-import (
+/*import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/breadinator/swkshp/utils"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
 
+// Deprecated: no longer handling config like this.
 func SetGame(game, directory string) error {
 	directory, err := filepath.Abs(directory)
 	if err != nil {
@@ -47,6 +49,7 @@ func SetGame(game, directory string) error {
 	return nil
 }
 
+// Deprecated: no longer handling config like this.
 func GetGame(game string) (string, bool) {
 	p, e := GetConfigPathGame()
 	if e != nil {
@@ -61,3 +64,14 @@ func GetGame(game string) (string, bool) {
 
 	return gjson.Get(string(bytes), strings.ToLower(game)).String(), true
 }
+
+// Deprecated: no longer handling config like this.
+func SetVersion(version string) error {
+	path, err := GetConfigMain()
+	if err != nil {
+		return err
+	}
+	createIfNotExists(path, true)
+	return utils.JSONSet(path, "version", version)
+}
+*/

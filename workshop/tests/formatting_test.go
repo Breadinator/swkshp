@@ -3,6 +3,7 @@ package workshop_tests
 import (
 	"testing"
 
+	"github.com/breadinator/swkshp/utils"
 	"github.com/breadinator/swkshp/workshop"
 	"github.com/stretchr/testify/assert"
 )
@@ -14,7 +15,7 @@ func Test_WorkshopIDToURLInt(t *testing.T) {
 }
 
 func Test_WorkshopIDToURLStr(t *testing.T) {
-	url, ok := workshop.WorkshopIDToURL("123")
+	url, ok := utils.WorkshopIDToURL("123")
 	assert.True(t, ok)
 	assert.Equal(t, "steamcommunity.com/sharedfiles/filedetails/?id=123", url)
 }
@@ -23,19 +24,19 @@ func Test_WorkshopIDToURLFails(t *testing.T) {
 	var ok bool
 
 	// Bool
-	_, ok = workshop.WorkshopIDToURL(false)
+	_, ok = utils.WorkshopIDToURL(false)
 	assert.False(t, ok)
 
 	// Nil pointer
-	_, ok = workshop.WorkshopIDToURL(nil)
+	_, ok = utils.WorkshopIDToURL(nil)
 	assert.False(t, ok)
 
 	// Floating point
-	_, ok = workshop.WorkshopIDToURL(7.23)
+	_, ok = utils.WorkshopIDToURL(7.23)
 	assert.False(t, ok)
 
 	// Array
-	_, ok = workshop.WorkshopIDToURL([...]int{0, 1})
+	_, ok = utils.WorkshopIDToURL([...]int{0, 1})
 	assert.False(t, ok)
 }
 

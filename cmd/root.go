@@ -1,9 +1,8 @@
 package cmd
 
 import (
-	"os"
-
 	"github.com/breadinator/swkshp/downloader"
+	"github.com/breadinator/swkshp/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +26,7 @@ var rootCmd = &cobra.Command{
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
-		os.Exit(1)
+		utils.Err(err)
 	}
 }
 

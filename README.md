@@ -3,9 +3,7 @@ SWkshp installs mods from the Steam Workshop to mod folders of games owned via p
 
 ## Installation
 ### Through GitHub Releases
-Head to the [latest release](https://github.com/Breadinator/swkshp/releases/latest) and choose the appropriate version.* Then everything should be ready to go!
-
-*"swkshp.exe" for Windows, "swkshp-linux" for Linux, "skwshp-darwin" for Mac.
+Head to the [latest release](https://github.com/Breadinator/swkshp/releases/latest) and download `swkshp.exe` if you're on Windows.
 
 ### From source
 It can be installed directly from github using go's built-in tools.
@@ -54,10 +52,7 @@ This command will delete all associated files and remove its entry from the inte
 
 ## To-do
 * Improve the version tracking, and test more extensively
-* Test on Linux and Mac
+* Compile to Linux & Mac
 * Better errors
-* Add extra config options, e.g.
-  * Choosing the md5 buffer size
-* Streamline, e.g.
-  * Remove unneccesary steps (e.g. constant converting to and from url/id)
-* Autoupdater?
+* Add extra config options
+* Streamline

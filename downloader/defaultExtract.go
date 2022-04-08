@@ -3,13 +3,12 @@ package downloader
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/breadinator/swkshp/config"
+	"github.com/breadinator/swkshp/resource"
 	"github.com/breadinator/swkshp/utils"
 	"github.com/breadinator/swkshp/versions"
 	"github.com/breadinator/swkshp/workshop"
@@ -20,20 +19,22 @@ import (
 func DefaultExtract(cmd *cobra.Command, args []string) {
 	game, err := cmd.Flags().GetString("game")
 	if err != nil {
-		panic(err)
+		utils.Err(err)
+		return
 	}
 	if game == "" {
 		game, err = workshop.GetGame(args)
 		if err != nil {
-			panic(err)
+			utils.Err(err)
+			return
 		}
 	}
 	game = strings.ToLower(game)
 
-	modFolder, ok := config.GetGame(game)
+	modFolder, ok := config.Conf.Games[game] //config.GetGame(game)
 	if !ok || modFolder == "" {
-		fmt.Printf("Please set the mod folder for %s using:\n	swkshp.exe config game \"%s\" \"C:/path/to/mod/folder\"\n", game, game)
-		os.Exit(0)
+		utils.Info("Please set the mod folder for %s using:\n	swkshp.exe config game \"%s\" \"C:/path/to/mod/folder\"", game, game)
+		return
 	}
 
 	url := strings.Join(args, " ")
@@ -69,7 +70,8 @@ func DefaultExtract(cmd *cobra.Command, args []string) {
 }
 
 func defaultExtractResource(url, dir, game string) {
-	id, err := workshop.WorkshopIDFromURL(url)
+	r := resource.ResourceFromURL(url)
+	id, err := r.ID()
 	if err != nil {
 		utils.Err(err)
 		return
@@ -81,11 +83,15 @@ func defaultExtractResource(url, dir, game string) {
 		utils.Err(err)
 		return
 	}
-	if t, ok := utils.ParseWorkshopTimestamp(url); ok && t.Before(entry.Updated) {
+
+	if t, err := r.Updated(); err != nil {
+		utils.Err(err)
+		return
+	} else if t.Before(entry.Updated) {
 		return
 	}
 
-	if _, err := workshop.ExtractResource(id, dir, game, true); err != nil {
+	if _, err := workshop.ExtractResource(r, dir, game, true); err != nil {
 		utils.Err(err)
 	}
 }

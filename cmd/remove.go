@@ -32,9 +32,9 @@ var removeCmd = &cobra.Command{
 				utils.Err(err)
 				return
 			}
-		} else {
+		} /*else {
 			url, _ = workshop.WorkshopIDToURL(id)
-		}
+		}*/
 
 		// gets game if none provided
 		if game == "" {

@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"strings"
 )
 
 const (
@@ -24,12 +23,8 @@ func Warn(warning string, a ...any) {
 	log(yellow, "WARN", fmt.Sprintf(warning, a...))
 }
 
-func Err(err error, msg ...string) {
-	var combined string
-	if len(msg) != 0 {
-		combined = strings.Join(msg, " ") + ": "
-	}
-	log(red, "ERR ", fmt.Sprintf("%s%s", combined, err))
+func Err(err error, a ...any) {
+	log(red, "ERR ", fmt.Sprintf(err.Error(), a...))
 }
 
 func log(color, level string, message any) {

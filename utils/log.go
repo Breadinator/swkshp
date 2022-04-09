@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"strings"
 )
 
 const (
@@ -23,8 +24,14 @@ func Warn(warning string, a ...any) {
 	log(yellow, "WARN", fmt.Sprintf(warning, a...))
 }
 
-func Err(err error, a ...any) {
-	log(red, "ERR ", fmt.Sprintf(err.Error(), a...))
+func Err(err error, a ...string) {
+	log(red, "ERR ", strings.Join(append(a, err.Error()), " "))
+}
+
+func Errs(errs []error) {
+	for _, err := range errs {
+		Err(err)
+	}
 }
 
 func log(color, level string, message any) {

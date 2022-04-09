@@ -15,7 +15,7 @@ type Config struct {
 	Games map[string]string // The paths to the games
 }
 
-const VERSION = "v1.2.0"
+const VERSION = "v1.2.1"
 
 var Conf, _ = GetConfig()
 

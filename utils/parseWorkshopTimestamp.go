@@ -39,7 +39,7 @@ func ParseWorkshopTimestamp(timestamp string) (time.Time, bool) {
 		mins,
 		0,
 		0,
-		time.FixedZone("PT", -7),
+		time.UTC,
 	), true
 }
 

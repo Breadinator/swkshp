@@ -6,7 +6,7 @@ import (
 	"github.com/tcnksm/go-latest"
 )
 
-func autoUpdate() {
+func checkUpdate() {
 	// Check for if there is a new version
 	githubTag := &latest.GithubTag{
 		Owner:             "breadinator",

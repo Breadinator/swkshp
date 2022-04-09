@@ -90,3 +90,19 @@ func GetModEntry(game string, id int) (*Entry, error) {
 func RemoveModEntry(game string, id int) (sql.Result, error) {
 	return dbExec(game, "DELETE FROM mods WHERE id=?", id)
 }
+
+func GetAllEntries(game string) ([]Entry, error) {
+	db, err := DBOpen(game)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := db.Query(`SELECT * FROM mods`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	scanned := make([]Entry, 0)
+	return scanned, scan.Rows(&scanned, rows)
+}

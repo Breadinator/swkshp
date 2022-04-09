@@ -42,3 +42,9 @@ func TestD(t *testing.T) {
 	_, err := versions.GetModEntry("test", -1)
 	assert.NotNil(t, err)
 }
+
+func Test_GetAllEntries(t *testing.T) {
+	ents, err := versions.GetAllEntries("test")
+	assert.Nil(t, err)
+	fmt.Printf("%+v\n", ents)
+}

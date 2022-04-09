@@ -12,7 +12,10 @@ const (
 )
 
 func main() {
-	setup()
+	if !setup() {
+		utils.Info("Setup failed. Exiting.")
+		return
+	}
 	defer close()
 	cmd.Execute()
 }
@@ -25,14 +28,11 @@ func setup() bool {
 		return false
 	}
 
-	autoUpdate()
-
+	checkUpdate()
 	return true
 }
 
 func close() {
-	// close all databases
-	for _, err := range versions.DBCloseAll() {
-		utils.Err(err)
-	}
+	// close all db connections, log all errors
+	utils.Errs(versions.DBCloseAll())
 }

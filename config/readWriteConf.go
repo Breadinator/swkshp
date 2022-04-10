@@ -8,14 +8,22 @@ import (
 	"github.com/breadinator/swkshp/utils"
 )
 
+// Reads and unmarshals the stored config.
 func GetConfig() (*Config, error) {
+	errs := CreateConfigIfNotExists()
+	if errs[0] != nil || errs[1] != nil {
+		utils.Errs(errs[:])
+		return nil, errs[0]
+	}
+
 	// var init
 	conf := Config{
+		Main:  main{},
 		Games: make(map[string]string),
 	}
 
 	// Load main config
-	mainPath, err := GetConfigMain()
+	mainPath, err := GetConfigPathMain()
 	if err != nil {
 		return &conf, err
 	}
@@ -47,13 +55,13 @@ func SaveConfig(c *Config) error {
 	var err error
 
 	// gets config paths if not set
-	if utils.IsNilValue(c.Paths.Main) {
+	if c.Paths.Main == "" {
 		c.Paths.Main, err = GetConfigPathMain()
 		if err != nil {
 			return err
 		}
 	}
-	if utils.IsNilValue(c.Paths.Games) {
+	if c.Paths.Games == "" {
 		c.Paths.Games, err = GetConfigPathGame()
 		if err != nil {
 			return err

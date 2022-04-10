@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -12,6 +13,7 @@ const (
 
 	// color
 	red    = "\033[31m"
+	green  = "\033[32m"
 	yellow = "\033[33m"
 	gray   = "\033[37m"
 )
@@ -30,8 +32,18 @@ func Err(err error, a ...string) {
 
 func Errs(errs []error) {
 	for _, err := range errs {
-		Err(err)
+		if err != nil {
+			Err(err)
+		}
 	}
+}
+
+var i int
+
+// used to check if i get up to a certain point
+func Test() {
+	log(green, "TEST", strconv.Itoa(i))
+	i++
 }
 
 func log(color, level string, message any) {

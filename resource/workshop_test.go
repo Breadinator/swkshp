@@ -1,22 +1,21 @@
-package workshop_tests
+package resource
 
 import (
 	"testing"
 
-	"github.com/breadinator/swkshp/resource"
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_ResourceFromID(t *testing.T) {
-	r := resource.ResourceFromID(818773962)
+	r := ResourceFromID(818773962)
 	checkHugsLib(t, &r)
 }
 func Test_ResourceFromURL(t *testing.T) {
-	r := resource.ResourceFromURL("https://steamcommunity.com/workshop/filedetails/?id=818773962")
+	r := ResourceFromURL("https://steamcommunity.com/workshop/filedetails/?id=818773962")
 	checkHugsLib(t, &r)
 }
 
-func checkHugsLib(t *testing.T, r *resource.Resource) {
+func checkHugsLib(t *testing.T, r *Resource) {
 	id, err := r.ID()
 	assert.Nil(t, err)
 	assert.Equal(t, 818773962, id)

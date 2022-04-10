@@ -1,21 +1,22 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 )
 
+const VERSION = "v1.3.0"
+
 type Config struct {
 	Paths struct{ Main, Games string } // The paths to the config files
-	Main  struct {                     // Main config file
-		Version        string `json:"version"` // SWkshp version
-		FileReadBuffer int    `json:"buf"`     // How many bytes in buffers for reading files
-	}
+	Main  main
 	Games map[string]string // The paths to the games
 }
 
-const VERSION = "v1.2.1"
+type main struct { // Main config file
+	Version        string `json:"version"` // SWkshp version
+	FileReadBuffer int    `json:"buf"`     // How many bytes in buffers for reading files
+}
 
 var Conf, _ = GetConfig()
 
@@ -25,12 +26,7 @@ func GetConfigPath() (string, error) {
 		return "", err
 	}
 
-	return fmt.Sprintf("%s%cswkshp", uconf, os.PathSeparator), nil
-}
-
-// Deprecated: use GetConfigPathMain instead
-func GetConfigMain() (string, error) {
-	return GetConfigPathMain()
+	return filepath.Join(uconf, "swkshp"), nil
 }
 
 func GetConfigPathMain() (string, error) {
@@ -47,21 +43,5 @@ func GetConfigPathGame() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return conf + string(os.PathSeparator) + "games.json", nil
+	return filepath.Join(conf, "games.json"), nil
 }
-
-/*func createIfNotExists(path string, writeEmptyJSON ...bool) bool {
-	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		_, err = os.Create(path)
-		if len(writeEmptyJSON) != 0 && writeEmptyJSON[0] && err != nil {
-			f, err := os.Open(path)
-			if err != nil {
-				return false
-			}
-			f.WriteString("{}")
-			f.Close()
-		}
-		return err != nil
-	}
-	return false
-}*/

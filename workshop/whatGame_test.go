@@ -1,15 +1,14 @@
-package workshop_tests
+package workshop
 
 import (
 	"testing"
 
-	"github.com/breadinator/swkshp/workshop"
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_GetGame_UsingString(t *testing.T) {
 	url := `https://steamcommunity.com/sharedfiles/filedetails/?id=818773962`
-	game, err := workshop.GetGame(url)
+	game, err := GetGame(url)
 	assert.Nil(t, err)
 	if err == nil {
 		assert.Equal(t, "RimWorld", game)
@@ -18,7 +17,7 @@ func Test_GetGame_UsingString(t *testing.T) {
 
 func Test_GetGame_UsingInt(t *testing.T) {
 	id := 818773962
-	game, err := workshop.GetGame(id)
+	game, err := GetGame(id)
 	assert.Nil(t, err)
 	if err == nil {
 		assert.Equal(t, "RimWorld", game)
@@ -27,7 +26,7 @@ func Test_GetGame_UsingInt(t *testing.T) {
 
 func Test_GetGame_UsingInvalidType(t *testing.T) {
 	check := func(a any) {
-		_, err := workshop.GetGame(a)
+		_, err := GetGame(a)
 		assert.NotNil(t, err)
 	}
 

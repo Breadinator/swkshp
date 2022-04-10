@@ -1,15 +1,14 @@
-package workshop_tests
+package workshop
 
 import (
 	"testing"
 
 	"github.com/breadinator/swkshp/utils"
-	"github.com/breadinator/swkshp/workshop"
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_WorkshopIDToURLInt(t *testing.T) {
-	url, ok := workshop.WorkshopIDToURL(123)
+	url, ok := WorkshopIDToURL(123)
 	assert.True(t, ok)
 	assert.Equal(t, "steamcommunity.com/sharedfiles/filedetails/?id=123", url)
 }
@@ -41,12 +40,12 @@ func Test_WorkshopIDToURLFails(t *testing.T) {
 }
 
 func Test_WorkshopIDFromURLWorking(t *testing.T) {
-	id, err := workshop.WorkshopIDFromURL("steamcommunity.com/sharedfiles/filedetails/?id=123")
+	id, err := WorkshopIDFromURL("steamcommunity.com/sharedfiles/filedetails/?id=123")
 	assert.Nil(t, err)
 	assert.Equal(t, 123, id)
 }
 
 func Test_WorkshopIDFromURLFail(t *testing.T) {
-	_, err := workshop.WorkshopIDFromURL("steamcommunity.com/sharedfiles/filedetails/?id= invalid")
+	_, err := WorkshopIDFromURL("steamcommunity.com/sharedfiles/filedetails/?id= invalid")
 	assert.Error(t, err)
 }

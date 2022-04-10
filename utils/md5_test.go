@@ -1,4 +1,4 @@
-package utils_tests
+package utils
 
 import (
 	"crypto/sha512"
@@ -8,7 +8,6 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/breadinator/swkshp/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,11 +19,11 @@ var paths [3]string = [...]string{
 
 func Test_GetFileMD5_DIFFERENT(t *testing.T) {
 	for i := 1; i < len(paths); i++ {
-		a, err := utils.GetFileMD5(paths[i], 512)
+		a, err := GetFileMD5(paths[i], 512)
 		assert.Nil(t, err)
-		b, err := utils.GetFileMD5(paths[i-1], 512)
+		b, err := GetFileMD5(paths[i-1], 512)
 		assert.Nil(t, err)
-		assert.False(t, utils.SlicesEqual(a, b))
+		assert.False(t, SlicesEqual(a, b))
 		fmt.Printf("%x\n", a)
 	}
 }
@@ -35,7 +34,7 @@ func Test_GetFileMD5_BUFSIZES(t *testing.T) {
 		sums := *new([len(powers)][]byte)
 		var err error
 		for i, power := range powers {
-			sums[i], err = utils.GetFileMD5(path, 2^power)
+			sums[i], err = GetFileMD5(path, 2^power)
 			assert.Nil(t, err)
 			if i != 0 {
 				assert.Equal(t, sums[i], sums[i-1])
@@ -45,14 +44,14 @@ func Test_GetFileMD5_BUFSIZES(t *testing.T) {
 }
 
 func Test_GetFileMD5_404(t *testing.T) {
-	_, err := utils.GetFileMD5("C:/this/doesn't/exist", 512)
+	_, err := GetFileMD5("C:/this/doesn't/exist", 512)
 	assert.NotNil(t, err)
 }
 
 func Test_GetFileMD5_CertUtil(t *testing.T) {
 	re := regexp.MustCompile(`:\s*([a-f\d]+)\s*CertUtil:`)
 	for _, path := range paths {
-		a, _ := utils.GetFileMD5(path, 512)
+		a, _ := GetFileMD5(path, 512)
 
 		abs, _ := filepath.Abs(path)
 		output, _ := exec.Command("CertUtil", "-hashfile", abs, "md5").Output()
@@ -64,7 +63,7 @@ func Test_GetFileMD5_CertUtil(t *testing.T) {
 
 func Test_GetFileHash_SHA512(t *testing.T) {
 	for _, path := range paths {
-		_, err := utils.GetFileHash(path, 512, sha512.New())
+		_, err := GetFileHash(path, 512, sha512.New())
 		assert.Nil(t, err)
 	}
 }

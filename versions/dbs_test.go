@@ -1,20 +1,19 @@
-package versions_tests
+package versions
 
 import (
 	"testing"
 
-	"github.com/breadinator/swkshp/versions"
 	"github.com/stretchr/testify/assert"
 )
 
 func Test_DBOpen_DBCloseAll(t *testing.T) {
-	assert.True(t, versions.DBLen() == 0)
+	assert.True(t, DBLen() == 0)
 
-	db, err := versions.DBOpen("rimworld")
+	db, err := DBOpen("rimworld")
 	assert.NotNil(t, db)
 	assert.Nil(t, err)
 
-	errs := versions.DBCloseAll()
+	errs := DBCloseAll()
 	assert.True(t, len(errs) == 0, "%v should be empty", errs)
-	assert.True(t, versions.DBLen() == 0)
+	assert.True(t, DBLen() == 0)
 }

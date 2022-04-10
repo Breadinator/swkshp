@@ -31,7 +31,7 @@ func DefaultExtract(cmd *cobra.Command, args []string) {
 	}
 	game = strings.ToLower(game)
 
-	modFolder, ok := config.Conf.Games[game] //config.GetGame(game)
+	modFolder, ok := config.Conf.Games[game]
 	if !ok || modFolder == "" {
 		utils.Info("Please set the mod folder for %s using:\n	swkshp.exe config game \"%s\" \"C:/path/to/mod/folder\"", game, game)
 		return

@@ -1,4 +1,4 @@
-package versions_tests
+package versions
 
 import (
 	"crypto/md5"
@@ -6,30 +6,29 @@ import (
 	"testing"
 	"time"
 
-	"github.com/breadinator/swkshp/versions"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestA(t *testing.T) {
-	fmt.Println(versions.GetDBPath("test", true))
+	fmt.Println(GetDBPath("test", true))
 }
 
 var s [16]byte = md5.Sum([]byte("test"))
 
 func TestB(t *testing.T) {
-	entry := versions.Entry{
+	entry := Entry{
 		ID:      123,
 		Path:    "C:/example/path",
 		Sum:     s[:],
 		Updated: time.Now(),
 	}
-	fmt.Println(versions.UpdateModEntry("test", entry))
+	fmt.Println(UpdateModEntry("test", entry))
 }
 
 func TestC(t *testing.T) {
 	TestB(t)
 
-	ent, err := versions.GetModEntry("test", 123)
+	ent, err := GetModEntry("test", 123)
 	fmt.Println(*ent, err)
 
 	assert.EqualValues(t, 123, ent.ID)
@@ -39,12 +38,12 @@ func TestC(t *testing.T) {
 }
 
 func TestD(t *testing.T) {
-	_, err := versions.GetModEntry("test", -1)
+	_, err := GetModEntry("test", -1)
 	assert.NotNil(t, err)
 }
 
 func Test_GetAllEntries(t *testing.T) {
-	ents, err := versions.GetAllEntries("test")
+	ents, err := GetAllEntries("test")
 	assert.Nil(t, err)
 	fmt.Printf("%+v\n", ents)
 }

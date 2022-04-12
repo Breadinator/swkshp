@@ -32,8 +32,8 @@ require (
 	github.com/spf13/cobra v1.4.0
 	github.com/tcnksm/go-latest v0.0.0-20170313132115-e3007ae9052e
 	github.com/tidwall/gjson v1.14.0
-	github.com/tidwall/sjson v1.2.4
 	golang.org/x/net v0.0.0-20220325170049-de3da57026de // indirect
+	golang.org/x/text v0.3.7
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 	moul.io/http2curl v1.0.0 // indirect
 )

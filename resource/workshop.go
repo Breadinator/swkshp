@@ -1,11 +1,11 @@
 package resource
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/breadinator/swkshp/errors"
 	"github.com/breadinator/swkshp/utils"
 	"golang.org/x/exp/constraints"
 )
@@ -24,6 +24,7 @@ type Resource struct {
 	updated     time.Time         // When last updated, according to the web page.
 	breadcrumbs []string          // The stuff above the workshop title, e.g. "Game> Workshop > User's Workshop" for a single entry.
 	title       string            // The name of the mod.
+	game        string
 }
 
 func ResourceFromID[T constraints.Integer](id T) Resource {
@@ -63,7 +64,7 @@ func (r *Resource) Doc() (*goquery.Document, error) {
 		if ok {
 			r.doc, err = utils.GetDoc(url)
 		} else {
-			err = errors.New("couldn't get resource URL")
+			err = errors.ErrParsingFailed
 		}
 	}
 	return r.doc, err
@@ -96,7 +97,7 @@ func (r *Resource) Updated() (time.Time, error) {
 			ok := false
 			r.updated, ok = utils.ParseWorkshopTimestamp(timestamp)
 			if !ok {
-				err = fmt.Errorf("couldn't parse timestamp: %s", timestamp)
+				err = errors.Wrap(errors.ErrParsingFailed, fmt.Sprintf(`couldn't parse "%s"`, timestamp))
 			}
 		}
 	}
@@ -128,4 +129,20 @@ func (r *Resource) Title() (string, error) {
 	}
 
 	return r.title, err
+}
+
+// Gets the game listed
+func (r *Resource) Game() (string, error) {
+	if r.game != "" {
+		return r.game, nil
+	}
+	bc, err := r.Breadcrumbs()
+	if err != nil {
+		return r.game, err
+	}
+	if len(bc) == 0 {
+		return r.game, errors.Wrap(errors.ErrGameNotFound, "no breadcrumbs found")
+	}
+	r.game = bc[0]
+	return r.game, err
 }

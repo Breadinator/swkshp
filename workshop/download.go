@@ -1,12 +1,12 @@
 package workshop
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
 
+	"github.com/breadinator/swkshp/errors"
 	"github.com/parnurzeal/gorequest"
 	"github.com/tidwall/gjson"
 )
@@ -56,7 +56,7 @@ func DownloadResource(id int, output io.Writer) error {
 	}
 
 	if !ready {
-		return errors.New("resource not ready")
+		return errors.ErrResourceNotReady
 	}
 
 	url = fmt.Sprintf(`https://%s/prod//storage/%s?uuid=%s`, node, path, uuid)

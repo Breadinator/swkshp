@@ -1,9 +1,8 @@
-package workshop
+package utils
 
 import (
 	"testing"
 
-	"github.com/breadinator/swkshp/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,7 +13,7 @@ func Test_WorkshopIDToURLInt(t *testing.T) {
 }
 
 func Test_WorkshopIDToURLStr(t *testing.T) {
-	url, ok := utils.WorkshopIDToURL("123")
+	url, ok := WorkshopIDToURL("123")
 	assert.True(t, ok)
 	assert.Equal(t, "steamcommunity.com/sharedfiles/filedetails/?id=123", url)
 }
@@ -23,19 +22,19 @@ func Test_WorkshopIDToURLFails(t *testing.T) {
 	var ok bool
 
 	// Bool
-	_, ok = utils.WorkshopIDToURL(false)
+	_, ok = WorkshopIDToURL(false)
 	assert.False(t, ok)
 
 	// Nil pointer
-	_, ok = utils.WorkshopIDToURL(nil)
+	_, ok = WorkshopIDToURL(nil)
 	assert.False(t, ok)
 
 	// Floating point
-	_, ok = utils.WorkshopIDToURL(7.23)
+	_, ok = WorkshopIDToURL(7.23)
 	assert.False(t, ok)
 
 	// Array
-	_, ok = utils.WorkshopIDToURL([...]int{0, 1})
+	_, ok = WorkshopIDToURL([...]int{0, 1})
 	assert.False(t, ok)
 }
 
@@ -48,4 +47,20 @@ func Test_WorkshopIDFromURLWorking(t *testing.T) {
 func Test_WorkshopIDFromURLFail(t *testing.T) {
 	_, err := WorkshopIDFromURL("steamcommunity.com/sharedfiles/filedetails/?id= invalid")
 	assert.Error(t, err)
+}
+
+func Test_Sanitise(t *testing.T) {
+	var tests = [...][2]string{
+		{"all_valid_characters", "all_valid_characters"},
+		{"résumé", "resume"},
+		{"áèîçÍÀÔÇ", "aeiciaoc"},
+		{"#<&+%>!`&*'|{?\"=}/:\\@", ""},
+		{`éVÈRŷ%!\th iNg <t>ogETh&èr`, "everyth_ing_together"},
+	}
+
+	for _, test := range tests {
+		s, err := Sanitise(test[0])
+		assert.Nil(t, err)
+		assert.Equal(t, test[1], s)
+	}
 }

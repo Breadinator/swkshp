@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/breadinator/swkshp/errors"
 	"github.com/breadinator/swkshp/utils"
 )
 
@@ -33,7 +34,7 @@ func NewModEntry(workshopID int, zippedModPath string) (Entry, error) {
 	url := fmt.Sprintf(`https://steamcommunity.com/workshop/filedetails/?id=%d`, workshopID)
 	t, ok := utils.ParseWorkshopTimestamp(url)
 	if !ok {
-		return Entry{}, fmt.Errorf("couldn't parse %d's timestamp", workshopID)
+		return Entry{}, errors.Wrap(errors.ErrParsingFailed, "%d", workshopID)
 	}
 
 	// Get the MD5 checksum of the given zipped file

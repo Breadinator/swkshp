@@ -2,11 +2,12 @@ package utils
 
 import (
 	"archive/zip"
-	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/breadinator/swkshp/errors"
 )
 
 // Based off of https://stackoverflow.com/a/24792688
@@ -27,7 +28,7 @@ func Unzip(src, dest string) error {
 		defer rc.Close()
 		path := filepath.Join(dest, f.Name)
 		if !strings.HasPrefix(path, filepath.Clean(dest)+string(os.PathSeparator)) {
-			return fmt.Errorf("illegal file path: %s", path)
+			return errors.Wrap(errors.ErrIllegalPath, path)
 		}
 
 		if f.FileInfo().IsDir() {

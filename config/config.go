@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 )
 
-const VERSION = "v1.3.0"
+const VERSION = "v1.3.1"
 
 type Config struct {
 	Paths struct{ Main, Games string } // The paths to the config files

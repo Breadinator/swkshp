@@ -1,10 +1,11 @@
 package workshop
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 
+	"github.com/breadinator/swkshp/errors"
+	"github.com/breadinator/swkshp/utils"
 	"github.com/parnurzeal/gorequest"
 )
 
@@ -20,12 +21,12 @@ func CheckAvailable(resource any) (string, []error) {
 		id = t
 	case string:
 		var err error
-		id, err = WorkshopIDFromURL(t)
+		id, err = utils.WorkshopIDFromURL(t)
 		if err != nil {
-			return "", []error{errors.New("couldn't parse resource")}
+			return "", []error{errors.ErrParsingFailed}
 		}
 	default:
-		return "", []error{errors.New("couldn't parse resource")}
+		return "", []error{errors.ErrParsingFailed}
 	}
 
 	downloadFormat := "raw"
@@ -37,7 +38,7 @@ func CheckAvailable(resource any) (string, []error) {
 		End()
 
 	if resp.StatusCode != 200 {
-		return "", []error{fmt.Errorf("game not avalable or server is down. Status code: %d", resp.StatusCode)}
+		return "", []error{errors.Wrap(errors.ErrGameNotFound, fmt.Sprintf("Status: %d", resp.StatusCode))}
 	}
 
 	return body, errs

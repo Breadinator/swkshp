@@ -2,8 +2,6 @@ package versions
 
 import (
 	"database/sql"
-	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 
@@ -11,13 +9,14 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/breadinator/swkshp/config"
+	"github.com/breadinator/swkshp/errors"
 )
 
 // Gets the path to the sqlite3 database. If true is given as the second argument, it will create one if it doesn't exist.
 func GetDBPath(game string, create ...bool) (string, error) {
 	p, ok := config.Conf.Games[game]
 	if !ok {
-		return "", fmt.Errorf("game %s not found in %+v", game, config.Conf.Games)
+		return "", errors.Wrap(errors.ErrGameNotFound, game)
 	}
 
 	dbPath := filepath.Join(p, DBName)

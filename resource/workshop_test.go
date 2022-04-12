@@ -46,3 +46,21 @@ func checkHugsLib(t *testing.T, r *Resource) {
 		assert.Equal(t, "UnlimitedHugs&#39;s Workshop", breadcrumbs[2])
 	}
 }
+
+func Test_Game(t *testing.T) {
+	resources := [...][2]string{
+		{`https://steamcommunity.com/workshop/filedetails/?id=818773962`, "RimWorld"},             // RimWorld item
+		{`https://steamcommunity.com/sharedfiles/filedetails/?id=1884025115`, "RimWorld"},         // RimWorld collection
+		{`https://steamcommunity.com/sharedfiles/filedetails/?id=844674609`, "XCOM 2"},            // XCOM 2 item
+		{`https://steamcommunity.com/sharedfiles/filedetails/?id=1129554146`, "XCOM 2"},           // XCOM 2 collection
+		{`https://steamcommunity.com/sharedfiles/filedetails/?id=1619685021`, "Cities: Skylines"}, // Cities: Skylines item
+		{`https://steamcommunity.com/workshop/filedetails/?id=804313002`, "Cities: Skylines"},     // Cities: Skylines collection
+	}
+
+	for _, r := range resources {
+		res := ResourceFromURL(r[0])
+		game, err := res.Game()
+		assert.Nil(t, err)
+		assert.Equal(t, r[1], game)
+	}
+}

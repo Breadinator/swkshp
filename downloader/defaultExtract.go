@@ -17,13 +17,16 @@ import (
 
 // Downloads and extracts from Steam Workshop to the mods folder.
 func DefaultExtract(cmd *cobra.Command, args []string) {
+	url := strings.Join(args, " ")
+	r := resource.ResourceFromURL(url)
+
 	game, err := cmd.Flags().GetString("game")
 	if err != nil {
 		utils.Err(err)
 		return
 	}
 	if game == "" {
-		game, err = workshop.GetGame(args)
+		game, err = r.Game()
 		if err != nil {
 			utils.Err(err)
 			return
@@ -36,8 +39,6 @@ func DefaultExtract(cmd *cobra.Command, args []string) {
 		utils.Info("Please set the mod folder for %s using:\n	swkshp.exe config game \"%s\" \"C:/path/to/mod/folder\"", game, game)
 		return
 	}
-
-	url := strings.Join(args, " ")
 
 	if isCollection, err := workshop.IsCollection(url); isCollection {
 		resp, err := http.Get(url)
@@ -56,7 +57,8 @@ func DefaultExtract(cmd *cobra.Command, args []string) {
 		doc.Find("div.collectionItem").Each(func(i int, s *goquery.Selection) {
 			link, exists := s.Find("div.collectionItemDetails a").Attr("href")
 			if exists {
-				defaultExtractResource(link, modFolder, game)
+				r := resource.ResourceFromURL(link)
+				defaultExtractResource(&r, modFolder, game)
 			}
 		})
 
@@ -64,13 +66,12 @@ func DefaultExtract(cmd *cobra.Command, args []string) {
 		utils.Err(err)
 		return
 	} else {
-		defaultExtractResource(url, modFolder, game)
+		defaultExtractResource(&r, modFolder, game)
 	}
 
 }
 
-func defaultExtractResource(url, dir, game string) {
-	r := resource.ResourceFromURL(url)
+func defaultExtractResource(r *resource.Resource, dir, game string) {
 	id, err := r.ID()
 	if err != nil {
 		utils.Err(err)

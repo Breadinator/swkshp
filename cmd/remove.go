@@ -1,18 +1,13 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"strconv"
 
+	"github.com/breadinator/swkshp/errors"
+	"github.com/breadinator/swkshp/resource"
 	"github.com/breadinator/swkshp/utils"
 	"github.com/breadinator/swkshp/versions"
-	"github.com/breadinator/swkshp/workshop"
 	"github.com/spf13/cobra"
 )
 
@@ -27,23 +22,23 @@ var removeCmd = &cobra.Command{
 		// checks if the given
 		id, err := strconv.Atoi(url)
 		if err != nil {
-			id, err = workshop.WorkshopIDFromURL(url)
+			id, err = utils.WorkshopIDFromURL(url)
 			if err != nil {
 				utils.Err(err)
 				return
 			}
-		} /*else {
-			url, _ = workshop.WorkshopIDToURL(id)
-		}*/
+		}
+
+		r := resource.ResourceFromURL(url)
 
 		// gets game if none provided
 		if game == "" {
-			game, err = workshop.GetGame(id)
+			game, err = r.Game()
 			if err != nil {
 				utils.Err(err)
 				return
 			} else if game == "" {
-				utils.Err(fmt.Errorf("could not find the game for Workshop resource with ID %d", id))
+				utils.Err(errors.Wrap(errors.ErrGameUnavailable, "game with ID %d unavailable", id))
 				utils.Info("You can provide your own game info using the -g flag")
 				return
 			}

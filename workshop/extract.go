@@ -14,7 +14,7 @@ import (
 // Extracts things that match "dir/id - (downloaded title).zip" where dir is a given directory and id is the given Workshop ID.
 //
 // Deletes the archive if successful.
-func ExtractResource(r resource.Resource, dir, game string, verbose bool) (string, error) {
+func ExtractResource(r *resource.Resource, dir, game string, verbose bool) (string, error) {
 	id, err := r.ID()
 	if err != nil {
 		return "", err
@@ -24,8 +24,7 @@ func ExtractResource(r resource.Resource, dir, game string, verbose bool) (strin
 		ID: int64(id),
 	}
 
-	url, _ := r.URL()
-	title, err := GetResourceTitle(url)
+	title, err := r.Title()
 	if err != nil {
 		return "", err
 	}

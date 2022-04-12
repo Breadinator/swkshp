@@ -52,7 +52,7 @@ This command will delete all associated files and remove its entry from the inte
 
 ## To-do
 * Improve the version tracking, and test more extensively
+    * Improve how files are updated
 * Compile to Linux & Mac
-* Better errors
 * Add extra config options
 * Streamline
